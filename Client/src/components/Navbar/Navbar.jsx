@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 
 // Icons 
@@ -10,8 +10,11 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 // CSS Files Import
 import "../Navbar/Navbar.scss"
+import Cart from '../Cart/Cart.jsx';
 
 const Navbar = () => {
+  const [open, setOpen] = useState(false)
+
   return (
     <div className='navbar'>
       <div className="wrapper">
@@ -66,7 +69,7 @@ const Navbar = () => {
             <PersonOutlineOutlinedIcon />
             <FavoriteBorderOutlinedIcon />
 
-            <div className="cartIcon">
+            <div className="cartIcon" onClick={() => setOpen(!open)}>
               <ShoppingCartOutlinedIcon />
               <span>0</span>
             </div>
@@ -74,6 +77,8 @@ const Navbar = () => {
         </div>
 
       </div>
+
+      {open && <Cart />}
     </div>
   )
 }
