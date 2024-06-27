@@ -1,7 +1,8 @@
 import Layout from "./Layout/Layout";
 import Home from "./Pages/Home/Home"
 import Products from "./Pages/Products/Products"
-import Product from "./Pages/Category/Product"
+import Product from "./Pages/SingleProduct/Product"
+import "../src/App.scss"
 
 import {
   createBrowserRouter,
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
         element:<Products />
       },
       {
-        // Individual Product Page
+        // Individual(SingleProduct) Page
         path:"/product/:id",
         element:<Product />
       },

@@ -1,8 +1,9 @@
 import React from 'react'
+import "../SingleProduct/Product.scss"
 
 const Product = () => {
   return (
-    <div>Hii Product!!</div>
+    <div className='product'>Hii Product!!</div>
   )
 }
 

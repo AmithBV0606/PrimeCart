@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
 
         <div className="right">
-          <img src="/img/payment.png" alt="" />
+          <img src="/src/assets/img/payment.png" alt="" />
         </div>
       </div>
 
