@@ -1,7 +1,7 @@
 import React from 'react'
 import "../Categories/Categories.scss"
 import { Link } from "react-router-dom"
-import { categories } from '../../assets/Categories/categories'
+import CategoriesImg from "../../assets/Categories/CategoriesImg"
 
 const Categories = () => {
   return (
@@ -11,16 +11,16 @@ const Categories = () => {
         <div className="col">
             {/* 2 Rows */}
             <div className="row">
-                <img src={categories.sale} alt="" />
+                <img src={CategoriesImg.sale} alt="" />
                 <button>
-                    <Link className='link' to="/products/1">Sale</Link>
+                    <Link className='link' to="/products/7">Sale</Link>
                 </button>
             </div>
             
             <div className="row">
-                <img src={categories.women} alt="" />
+                <img src={CategoriesImg.women} alt="" />
                 <button>
-                    <Link className='link' to="/products/1">Women</Link>
+                    <Link className='link' to="/products/7">Women</Link>
                 </button>
             </div>
         </div>
@@ -29,9 +29,9 @@ const Categories = () => {
         <div className="col">
             {/* 1 Row */}
             <div className="row">
-                <img src={categories.newSeasons} alt="" />
+                <img src={CategoriesImg.newSeasons} alt="" />
                 <button>
-                    <Link className='link' to="/products/1">New Season</Link>
+                    <Link className='link' to="/products/7">New Season</Link>
                 </button>
             </div>
         </div>
@@ -43,27 +43,27 @@ const Categories = () => {
                 {/* Inside Row 1, there are two columns */}
                 <div className="col">
                     <div className="row">
-                        <img src={categories.men} alt="" />
+                        <img src={CategoriesImg.men} alt="" />
                         <button>
-                            <Link className='link' to="/products/1">Men</Link>
+                            <Link className='link' to="/products/7">Men</Link>
                         </button>
                     </div>
                 </div>
 
                 <div className="col">
                     <div className="row">
-                        <img src={categories.accessories} alt="" />
+                        <img src={CategoriesImg.accessories} alt="" />
                         <button>
-                            <Link className='link' to="/products/1">Accessories</Link>
+                            <Link className='link' to="/products/7">Accessories</Link>
                         </button>
                     </div>
                 </div>
             </div>
 
             <div className="row">
-                <img src={categories.shoes} alt="" />
+                <img src={CategoriesImg.shoes} alt="" />
                 <button>
-                    <Link className='link' to="/products/1">Shoes</Link>
+                    <Link className='link' to="/products/7">Shoes</Link>
                 </button>
             </div>
         </div>

@@ -1,37 +1,50 @@
-import React, { useState } from 'react'
-import "../Products/Products.scss"
-import List from '../../components/List/List'
-import { useParams } from 'react-router-dom'
+import React, { useState } from "react";
+import "../Products/Products.scss";
+import List from "../../components/List/List";
+import { useParams } from "react-router-dom";
+import useFetch from "../../hooks/useFetch.js";
 
 const Products = () => {
-  const catId = parseInt(useParams().id)
-  const [maxPrice, setMaxPrice ] = useState(100)
-  const [sort, setSort] = useState(null)
+  const catId = useParams().id;
+  const [maxPrice, setMaxPrice] = useState(50);
+  const [sort, setSort] = useState("asc");
+  const [selectedSubCats, setSelectedSubCats] = useState([]);
+
+  const { data, loading, error } = useFetch(
+    `/sub-categories?[filters][categories][id][$eq] = ${catId}`
+  );
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    const ischecked = e.target.checked;
+
+    setSelectedSubCats(
+      ischecked
+        ? [...selectedSubCats, value]
+        : selectedSubCats.filter((item) => item !== value)
+    );
+  };
 
   return (
-    <div className='products'>
-
+    <div className="products">
       {/* Filter Section */}
       <div className="left">
-
         {/* Filter 1 :  */}
         <div className="filterItem">
           <h2>Product Categories</h2>
 
-          <div className="inputItem">
-            <input type="checkbox" name="" id="1" value={1}/>
-            <label htmlFor="1">Hat</label>
-          </div>
-
-          <div className="inputItem">
-            <input type="checkbox" name="" id="2" value={2}/>
-            <label htmlFor="2">Skirts</label>
-          </div>
-
-          <div className="inputItem">
-            <input type="checkbox" name="" id="3" value={3}/>
-            <label htmlFor="3">Coats</label>
-          </div>
+          {data?.map((item) => (
+            <div className="inputItem" key={item?.id}>
+              <input
+                type="checkbox"
+                name=""
+                id={item?.id}
+                value={item?.id}
+                onChange={handleChange}
+              />
+              <label htmlFor={item.id}>{item?.attributes?.title}</label>
+            </div>
+          ))}
         </div>
 
         {/* Filter 2 :  */}
@@ -41,11 +54,11 @@ const Products = () => {
           <div className="inputItem">
             <span>0</span>
 
-            <input 
-              type="range" 
-              min={0} 
-              max={100} 
-              onChange={(e)=>setMaxPrice(e.target.value)} 
+            <input
+              type="range"
+              min={0}
+              max={50}
+              onChange={(e) => setMaxPrice(e.target.value)}
               defaultValue={10}
             />
 
@@ -58,27 +71,47 @@ const Products = () => {
           <h2>Sort by</h2>
 
           <div className="inputItem">
-            <input type="radio" name="price" id="asc" value="asc" onChange={(e) => setSort("asc")}/>
-            <label htmlFor="asc">Price (Lowest first)</label>
+            <input
+              type="radio"
+              id="asc"
+              value="asc"
+              name="price"
+              onChange={(e) => setSort("asc")}
+              defaultChecked
+            />
+            <label htmlFor="asc">Price : Low to High(Default)</label>
           </div>
 
           <div className="inputItem">
-            <input type="radio" name="price" id="desc" value="desc" onChange={(e) => setSort("desc")}/>
-            <label htmlFor="desc">Price (Highest first)</label>
+            <input
+              type="radio"
+              id="desc"
+              value="desc"
+              name="price"
+              onChange={(e) => setSort("desc")}
+            />
+            <label htmlFor="desc">Price : High to Low</label>
           </div>
         </div>
-
       </div>
 
       {/* Image Section */}
       <div className="right">
-        <img src="https://images.pexels.com/photos/1549200/pexels-photo-1549200.jpeg?auto=compress&cs=tinysrgb&w=1600" alt="" className='catImg'/>
+        <img
+          src="https://images.pexels.com/photos/1549200/pexels-photo-1549200.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          alt=""
+          className="catImg"
+        />
 
-        <List catId={catId} maxPrice={maxPrice} sort={sort} />
+        <List
+          catId={catId}
+          maxPrice={maxPrice}
+          sort={sort}
+          subCats={selectedSubCats}
+        />
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Products
+export default Products;

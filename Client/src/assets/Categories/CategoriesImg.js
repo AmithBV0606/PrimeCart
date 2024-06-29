@@ -5,7 +5,7 @@ import accessories from "../Categories/accessories.jpg";
 import shoes from "../Categories/shoes.jpg";
 import newSeasons from "../Categories/newSeasons.jpg";
 
-export const categories = {
+const CategoriesImg = {
   men,
   women,
   sale,
@@ -13,3 +13,5 @@ export const categories = {
   shoes,
   newSeasons,
 };
+
+export default CategoriesImg;
