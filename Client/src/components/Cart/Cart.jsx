@@ -1,59 +1,76 @@
 import React from 'react'
-import '../Cart/Cart.scss'
+import './Cart.scss'
+import { useSelector, useDispatch } from "react-redux"
+import { removeItem, resetCart } from '../../redux/cartReducer';
+import {loadStripe} from '@stripe/stripe-js';
+import { makeRequest } from "../../makeRequest";
 
 // Icons 
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 const Cart = () => {
-    const data = [
-        {
-            id:1,
-            img:"https://images.pexels.com/photos/1972115/pexels-photo-1972115.jpeg?auto=compress&cs=tinysrgb&w=100",
-            title:"Long Sleev Graphic T-shirt",
-            isNew: true,
-            desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, hic.Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, hic.",
-            oldPrice: 10,
-            price:8
-        },
-        {
-            id:2,
-            img:"https://images.pexels.com/photos/1972115/pexels-photo-1972115.jpeg?auto=compress&cs=tinysrgb&w=100",
-            title:"Long Sleev Graphic T-shirt",
-            isNew: true,
-            desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, hic.Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, hic.",
-            oldPrice: 10,
-            price:8
-        },
-    ]
+    const products = useSelector(state=>state.cart.products)
+    const dispatch = useDispatch()
+
+    const totalPrice = () => {
+        let total = 0;
+
+        products.forEach(item => {
+            total += item.quantity * item.price
+        });
+
+        return total.toFixed(2)
+    }
+
+    const stripePromise = loadStripe(
+        'pk_test_51PXMoMC9hYStAMMZZUuwdAkTZ4d9NsvzYnLKYgd22gQqgR4nOm0nq4m6pe6QdmKCjdccFyr0Nwqds1TMOc8LqNPW00LQzkEboq'
+    );
+
+    const handlePayments = async () => {
+        try {
+            const stripe = await stripePromise;
+
+            const res = await makeRequest.post("/orders", {
+                products,
+            });
+
+            await stripe.redirectToCheckout({
+                sessionId: res.data.stripeSession.id,
+            });
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
   return (
     <div className='cart'>
         <h1>Products in your cart</h1>
 
-        {data.map((item) => (
+        {products?.map((item) => (
                 <div className='Item' key={item.id}>
-                    <img src={item.img} alt="" />
+                    <img src={import.meta.env.VITE_APP_UPLOAD_URL + item.img} alt="" />
 
                     <div className="details">
                         <h1>{item.title}</h1>
                         <p>{item.desc?.substring(0, 75)}</p>
                         <div className="price">
-                            1 X ${item.price}
+                            {item.quantity} X ${item.price}
                         </div>
                     </div>
 
-                    <DeleteOutlinedIcon className='delete' />
+                    <DeleteOutlinedIcon className='delete' onClick={() => dispatch(removeItem(item.id))}/>
                 </div>
         ))}
 
         <div className="total">
             <span>SUBTOTAL</span>
-            <span>$80</span>
+            <span>${totalPrice()}</span>
         </div>
 
-        <button>PROCEED TO CHECKOUT</button>
+        <button onClick={handlePayments}>PROCEED TO CHECKOUT</button>
 
-        <span className='reset'>Reset Cart</span>
+        <span className='reset' onClick={() => dispatch(resetCart())}>Reset Cart</span>
     </div>
   )
 }

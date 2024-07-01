@@ -20,7 +20,7 @@ const Categories = () => {
             <div className="row">
                 <img src={CategoriesImg.women} alt="" />
                 <button>
-                    <Link className='link' to="/products/7">Women</Link>
+                    <Link className='link' to="/products/8">Women</Link>
                 </button>
             </div>
         </div>
